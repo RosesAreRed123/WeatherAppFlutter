@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import 'package:weather/Weather.dart';
 
 class CityListWeather extends StatefulWidget {
   final String title;
@@ -43,10 +44,17 @@ class _CityListWeather extends State<CityListWeather> {
       this.humidity = results['main']['humidity'];
       this.description = results['weather'][0]['main'];
     });
+    if (response.statusCode == 200) {
+      return results.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception('Failed Get Weather');
+    }
   }
 
   AssetImage decideWeatherImage() {
     if (this.description == 'Haze') {
+      return AssetImage('assets/cloud.png');
+    } else if (this.description == 'Clouds') {
       return AssetImage('assets/cloud.png');
     } else {
       return AssetImage('assets/sun.png');

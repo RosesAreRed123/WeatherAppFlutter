@@ -115,7 +115,10 @@ class WeatherToday extends State<MyHomePage> {
               context,
               // Create the SelectionScreen in the next step.
               MaterialPageRoute(
-                  builder: (context) => CityList(title: 'City List')),
+                  builder: (context) => CityList(
+                        title: 'City List',
+                        City1: City1,
+                      )),
             );
             if (result != null) {
               City1.add(result);
