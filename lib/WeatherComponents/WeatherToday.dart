@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:weather/City.dart';
 import 'package:weather/WeatherComponents/CityList.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:weather/WeatherComponents/CityListWeather.dart';
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
@@ -20,13 +21,16 @@ class WeatherToday extends State<MyHomePage> {
     _loadCounter();
   }
 
-  List<String> City1;
+  List<String> City1 = [];
 
   _loadCounter() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      City1 = prefs.getStringList("Array");
-    });
+
+    City1 = prefs.getStringList("Array");
+    if (City1 == null) {
+      City1 = [];
+    }
+    setState(() {});
   }
 
   removeCityList(String cityName) {
@@ -48,30 +52,55 @@ class WeatherToday extends State<MyHomePage> {
     return Scaffold(
         appBar: AppBar(title: Text("Weather Today")),
         body: Container(
-          child: Center(
+          child: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 for (var i in City1)
                   Row(
-                    children: [
-                      TextButton(
-                        child: Text(i),
-                        style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.all(Colors.black)),
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => City(title: i)));
-                        },
+                    children: <Widget>[
+                      Expanded(
+                        flex: 1,
+                        child: Container(
+                          // color: Colors.amber,
+                          height: 100,
+                        ),
                       ),
-                      IconButton(
-                        icon: const Icon(Icons.delete),
-                        onPressed: () {
-                          removeCityList(i);
-                        },
+                      Container(
+                        child: TextButton(
+                          child: Text(
+                            i,
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          style: ButtonStyle(
+                              backgroundColor:
+                                  MaterialStateProperty.all(Colors.black)),
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        CityListWeather(title: i)));
+                          },
+                        ),
+                        // color: Colors.blue,
+                        height: 70,
+                        width: 100,
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Container(
+                          child: IconButton(
+                            icon: const Icon(Icons.delete),
+                            onPressed: () {
+                              removeCityList(i);
+                            },
+                          ),
+                          // color: Colors.amber,
+                          height: 100,
+                        ),
                       ),
                     ],
                   ),

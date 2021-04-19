@@ -20,17 +20,43 @@ class _CityListState extends State<CityList> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text("Enter New City"),
-          TextField(
+          new Padding(padding: EdgeInsets.only(top: 0.0)),
+          new Text(
+            'Enter New City',
+            style: new TextStyle(color: Colors.black, fontSize: 25.0),
+          ),
+          new Padding(padding: EdgeInsets.only(top: 50.0)),
+          new TextFormField(
+            decoration: new InputDecoration(
+              labelText: "Enter City",
+              fillColor: Colors.white,
+              border: new OutlineInputBorder(
+                borderRadius: new BorderRadius.circular(25.0),
+                borderSide: new BorderSide(),
+              ),
+              //fillColor: Colors.green
+            ),
             controller: _textController,
           ),
+          // Text("Enter New City"),
+
           ElevatedButton(
-              child: Text("Enter"),
+              style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStateProperty.all<Color>(Colors.black)),
+              child: Text("Enter",
+                  style: TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.bold)),
               onPressed: () {
                 Navigator.pop(context, _textController.text);
               }),
           ElevatedButton(
-              child: Text("Return"),
+              style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStateProperty.all<Color>(Colors.black)),
+              child: Text("Return",
+                  style: TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.bold)),
               onPressed: () {
                 Navigator.pop(context, null);
               })
