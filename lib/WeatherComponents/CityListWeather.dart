@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -26,28 +27,32 @@ class _CityListWeather extends State<CityListWeather> {
   }
 
   Future getWeather(String city) async {
-    http.Response response = await http.get(Uri.https(
-      'api.openweathermap.org',
-      '/data/2.5/weather',
-      {
-        'q': city,
-        'units': 'metric',
-        'appid': '9bd7406cc261f48f24bbd2bc6d684de9',
-      },
-    ));
+    try {
+      http.Response response = await http.get(Uri.https(
+        'api.openweathermap.org',
+        '/data/2.5/weather',
+        {
+          'q': city,
+          'units': 'metric',
+          'appid': '9bd7406cc261f48f24bbd2bc6d684de9',
+        },
+      ));
 
-    var results = jsonDecode(response.body);
-    print(results);
-    setState(() {
-      this.temp = results['main']['temp'];
-      this.name = results['name'];
-      this.humidity = results['main']['humidity'];
-      this.description = results['weather'][0]['main'];
-    });
-    if (response.statusCode == 200) {
-      return results.fromJson(jsonDecode(response.body));
-    } else {
-      throw Exception('Failed Get Weather');
+      var results = jsonDecode(response.body);
+      print(results);
+      setState(() {
+        this.temp = results['main']['temp'];
+        this.name = results['name'];
+        this.humidity = results['main']['humidity'];
+        this.description = results['weather'][0]['main'];
+      });
+      if (response.statusCode == 200) {
+        return results.fromJson(jsonDecode(response.body));
+      } else {
+        throw Exception('Failed Get Weather');
+      }
+    } on SocketException catch (_) {
+      throw "No Internet";
     }
   }
 

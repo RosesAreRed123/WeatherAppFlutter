@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -94,15 +95,27 @@ class _CityListState extends State<CityList> {
                     isError = false;
                   });
                 } else {
-                  if (await getWeather(_textController.text) == 404) {
+                  var result = await Connectivity().checkConnectivity();
+                  if (result == ConnectivityResult.none) {
+                    print("KOSONG");
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text('City not found'),
+                        content: Text('No internet Connection'),
                         duration: Duration(seconds: 10),
                       ),
                     );
                   } else {
-                    Navigator.pop(context, _textController.text);
+                    print("Internet Available");
+                    if (await getWeather(_textController.text) == 404) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('City not found'),
+                          duration: Duration(seconds: 10),
+                        ),
+                      );
+                    } else {
+                      Navigator.pop(context, _textController.text);
+                    }
                   }
                 }
               }),

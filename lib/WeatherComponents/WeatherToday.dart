@@ -1,9 +1,12 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:weather/City.dart';
 import 'package:weather/WeatherComponents/CityList.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:weather/WeatherComponents/CityListWeather.dart';
+import 'package:connectivity/connectivity.dart';
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
@@ -67,7 +70,7 @@ class WeatherToday extends State<MyHomePage> {
                         ),
                       ),
                       Container(
-                        child: TextButton(
+                        child: ElevatedButton(
                           child: Text(
                             i,
                             style: TextStyle(
@@ -86,8 +89,8 @@ class WeatherToday extends State<MyHomePage> {
                           },
                         ),
                         // color: Colors.blue,
-                        height: 70,
-                        width: 100,
+                        height: 80,
+                        width: 300,
                       ),
                       Expanded(
                         flex: 1,
